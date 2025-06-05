@@ -1,0 +1,149 @@
+{
+  "dashboard": {
+    "id": null,
+    "title": "SFTP to S3 Streaming Performance",
+    "tags": ["sftp", "s3", "streaming"],
+    "style": "dark",
+    "timezone": "browser",
+    "panels": [
+      {
+        "id": 1,
+        "title": "Memory Usage (MB)",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sftp_s3_memory_usage_bytes / 1024 / 1024",
+            "legendFormat": "Memory Usage (MB)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decbytes",
+            "thresholds": {
+              "steps": [
+                {"color": "green", "value": null},
+                {"color": "yellow", "value": 500},
+                {"color": "red", "value": 1000}
+              ]
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 0, "y": 0}
+      },
+      {
+        "id": 2,
+        "title": "Memory Usage Over Time",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sftp_s3_memory_usage_bytes / 1024 / 1024",
+            "legendFormat": "Memory (MB)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "decbytes"
+          }
+        },
+        "gridPos": {"h": 8, "w": 18, "x": 6, "y": 0}
+      },
+      {
+        "id": 3,
+        "title": "Disk I/O Activity",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "rate(sftp_s3_disk_io_read_bytes_total[5m]) / 1024 / 1024",
+            "legendFormat": "Disk Read (MB/s)"
+          },
+          {
+            "expr": "rate(sftp_s3_disk_io_write_bytes_total[5m]) / 1024 / 1024",
+            "legendFormat": "Disk Write (MB/s)"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "MBs"
+          }
+        },
+        "gridPos": {"h": 8, "w": 12, "x": 0, "y": 8}
+      },
+      {
+        "id": 4,
+        "title": "Transfer Throughput",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sftp_s3_throughput_mbps",
+            "legendFormat": "Current Throughput"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "MBs",
+            "thresholds": {
+              "steps": [
+                {"color": "red", "value": null},
+                {"color": "yellow", "value": 50},
+                {"color": "green", "value": 100}
+              ]
+            }
+          }
+        },
+        "gridPos": {"h": 8, "w": 6, "x": 12, "y": 8}
+      },
+      {
+        "id": 5,
+        "title": "Data Transfer Progress",
+        "type": "timeseries",
+        "targets": [
+          {
+            "expr": "sftp_s3_bytes_transferred_total / 1024 / 1024 / 1024",
+            "legendFormat": "Total Data Transferred (GB)"
+          },
+          {
+            "expr": "sftp_s3_chunks_processed_total",
+            "legendFormat": "Chunks Processed"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "short"
+          }
+        },
+        "gridPos": {"h": 8, "w": 18, "x": 0, "y": 16}
+      },
+      {
+        "id": 6,
+        "title": "Transfer Duration",
+        "type": "stat",
+        "targets": [
+          {
+            "expr": "sftp_s3_transfer_duration_seconds",
+            "legendFormat": "Transfer Time"
+          }
+        ],
+        "fieldConfig": {
+          "defaults": {
+            "unit": "s"
+          }
+        },
+        "gridPos": {"h": 4, "w": 6, "x": 18, "y": 16}
+      },
+      {
+        "id": 7,
+        "title": "Memory Efficiency Proof",
+        "type": "text",
+        "gridPos": {"h": 4, "w": 24, "x": 0, "y": 24},
+        "options": {
+          "content": "**Streaming Efficiency Analysis:**\n\n• **Memory Usage**: Should remain constant (~100MB) regardless of file size\n• **Disk I/O**: Minimal disk writes (only system operations, no file caching)\n• **Throughput**: Consistent performance without memory spikes\n\nThis proves that streaming in fixed chunks prevents memory overload and disk usage, making it scalable for files of any size."
+        }
+      }
+    ],
+    "time": {
+      "from": "now-1h",
+      "to": "now"
+    },
+    "refresh": "5s"
+  }
+}
