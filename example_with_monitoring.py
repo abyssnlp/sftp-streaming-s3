@@ -1,52 +1,56 @@
 """
-Example script demonstrating SFTP to S3 streaming with monitoring
+Example script demonstrating SFTP to S3 streaming with high-performance async concurrent processing
 """
 
 import os
-import boto3
-import paramiko
-from sftp_streaming.main import SFTPToS3Streamer
+import asyncio
+from sftp_streaming.main import AsyncSFTPToS3Streamer
 
 
-def main():
-    ssh_client = paramiko.SSHClient()
-    ssh_client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
+async def main():
+    # SSH connection parameters - needed for async concurrent processing
+    ssh_params = {
+        "host": os.getenv("SFTP_HOST", "localhost"),
+        "username": os.getenv("SFTP_USER", "airflow"),
+        "password": os.getenv("SFTP_PASSWORD", "airflow123"),
+        "port": int(os.getenv("SFTP_PORT", "30022")),
+    }
 
-    ssh_client.connect(
-        hostname=os.getenv("SFTP_HOST", "localhost"),
-        username=os.getenv("SFTP_USER", "airflow"),
-        password=os.getenv("SFTP_PASSWORD", "airflow123"),
-        port=int(os.getenv("SFTP_PORT", "30022")),
-    )
-
-    sftp_client = ssh_client.open_sftp()
-
-    session = boto3.Session(
-        aws_access_key_id=os.getenv("AWS_ACCESS_KEY_ID"),
-        aws_secret_access_key=os.getenv("AWS_SECRET_ACCESS_KEY"),
-    )
-
-    streamer = SFTPToS3Streamer(
-        sftp_client=sftp_client,
-        session=session,
+    # Initialize async streamer with SSH connection parameters
+    streamer = AsyncSFTPToS3Streamer(
         bucket_name=os.getenv("S3_BUCKET", "data"),
         push_gateway_url=os.getenv("PUSH_GATEWAY", "http://localhost:9091"),
-        job_name="large-file-transfer",
+        job_name="async-concurrent-file-transfer",
+        ssh_connection_params=ssh_params,
+        s3_endpoint_url="http://localhost:9000",
     )
 
-    file_path = "/home/airflow/upload/customers_10gb.csv"
+    file_path = "/upload/customers_10gb.csv"
 
-    print(f"Starting monitored transfer of {file_path}")
-    print("Metrics will be pushed to Prometheus Push Gateway every 2 seconds")
-    print("Check Grafana dashboard for real-time monitoring")
+    print(f"🚀 Starting HIGH-PERFORMANCE ASYNC CONCURRENT transfer of {file_path}")
+    print("💡 Features enabled:")
+    print("   • 4 concurrent async SFTP readers")
+    print("   • 8 concurrent async S3 uploaders")
+    print("   • Async connection pooling")
+    print("   • Real-time performance monitoring")
+    print("   • Expected significant speed improvement with asyncio!")
+    print()
+    print("📊 Monitor real-time performance:")
+    print("   • Prometheus metrics pushed every 2 seconds")
+    print("   • Check updated Grafana dashboard for concurrency analytics")
+    print("   • Watch for improved throughput with async operations!")
 
-    streamer.upload_to_s3(file_path)
+    try:
+        await streamer.upload_to_s3(file_path)
+        print("\n🎉 ASYNC CONCURRENT TRANSFER COMPLETED SUCCESSFULLY! 🎉")
+        print("📈 Check Grafana dashboard to see the async performance gains!")
 
-    print("Transfer completed! Check final metrics in Prometheus/Grafana")
-
-    sftp_client.close()
-    ssh_client.close()
+    except Exception as e:
+        print(f"❌ Transfer failed: {e}")
+        print(
+            "💡 If you see SSH connection errors, ensure all SSH connection details are correct"
+        )
 
 
 if __name__ == "__main__":
-    main()
+    asyncio.run(main())
