@@ -52,7 +52,15 @@ class AsyncSFTPToS3Streamer:
         self.registry = CollectorRegistry()
         self.setup_metrics()
         self.process = psutil.Process()
-        self.initial_disk_usage = psutil.disk_usage(".").used
+
+        try:
+            initial_io = self.process.io_counters()
+            self.initial_read_bytes = initial_io.read_bytes
+            self.initial_write_bytes = initial_io.write_bytes
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            self.initial_read_bytes = 0
+            self.initial_write_bytes = 0
+
         self.s3_session = aioboto3.Session()
         self.read_semaphore = asyncio.Semaphore(self.MAX_CONCURRENT_READS)
         self.upload_semaphore = asyncio.Semaphore(self.MAX_CONCURRENT_UPLOADS)
@@ -64,9 +72,9 @@ class AsyncSFTPToS3Streamer:
             "Memory usage in MB during streaming",
             registry=self.registry,
         )
-        self.disk_usage_increase_mb = Gauge(
-            "sftp_s3_disk_usage_increase_mb",
-            "Disk usage increase in MB (indicates writing to disk)",
+        self.process_write_bytes_mb = Gauge(
+            "sftp_s3_process_write_bytes_mb",
+            "Process write bytes in MB (indicates if process is writing to disk)",
             registry=self.registry,
         )
         self.bytes_transferred = Counter(
@@ -179,11 +187,12 @@ class AsyncSFTPToS3Streamer:
         memory_mb = self.process.memory_info().rss / (1024 * 1024)
         self.memory_usage_mb.set(memory_mb)
 
-        current_disk_usage = psutil.disk_usage(".").used
-        disk_increase_mb = (current_disk_usage - self.initial_disk_usage) / (
-            1024 * 1024
-        )
-        self.disk_usage_increase_mb.set(disk_increase_mb)
+        try:
+            current_io = self.process.io_counters()
+            write_bytes = current_io.write_bytes - self.initial_write_bytes
+            self.process_write_bytes_mb.set(write_bytes / (1024 * 1024))
+        except (psutil.NoSuchProcess, psutil.AccessDenied):
+            self.process_write_bytes_mb.set(0)
 
     async def _push_metrics(self):
         """Push metrics to Prometheus Push Gateway"""
@@ -322,7 +331,7 @@ class AsyncSFTPToS3Streamer:
             logger.info(f"Throughput: {final_throughput:.2f} MB/s")
             logger.info(f"Memory usage: {self.memory_usage_mb._value._value:.1f} MB")
             logger.info(
-                f"Disk usage increase: {self.disk_usage_increase_mb._value._value:.1f} MB"
+                f"Process write bytes: {self.process_write_bytes_mb._value._value:.1f} MB"
             )
             logger.info(f"Integrity: {'✓ VERIFIED' if integrity_ok else '✗ FAILED'}")
 

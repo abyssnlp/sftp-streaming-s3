@@ -21,23 +21,13 @@ async def main():
 
     file_path = "/upload/customers_10gb.csv"
 
-    print(f"🚀 Starting HIGH-PERFORMANCE ASYNC CONCURRENT transfer of {file_path}")
-    print("💡 Features enabled:")
-    print("   • 4 concurrent async SFTP readers")
-    print("   • 8 concurrent async S3 uploaders")
-    print("   • Async connection pooling")
-    print("   • Real-time performance monitoring")
-    print("   • Expected significant speed improvement with asyncio!")
+    print(f"🚀 Starting async concurrent transfer of {file_path}")
     print()
     print("📊 Monitor real-time performance:")
-    print("   • Prometheus metrics pushed every 2 seconds")
-    print("   • Check updated Grafana dashboard for concurrency analytics")
-    print("   • Watch for improved throughput with async operations!")
 
     try:
         await streamer.upload_to_s3(file_path)
-        print("\n🎉 ASYNC CONCURRENT TRANSFER COMPLETED SUCCESSFULLY! 🎉")
-        print("📈 Check Grafana dashboard to see the async performance gains!")
+        print("\n Async concurrent transfer completed successfully!")
 
     except Exception as e:
         print(f"❌ Transfer failed: {e}")

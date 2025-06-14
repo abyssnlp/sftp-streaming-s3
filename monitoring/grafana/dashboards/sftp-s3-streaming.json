@@ -148,8 +148,8 @@
           "datasource": {
             "type": "prometheus"
           },
-          "expr": "sftp_s3_disk_usage_increase_mb",
-          "legendFormat": "Disk Usage Increase (MB)",
+          "expr": "sftp_s3_process_write_bytes_mb",
+          "legendFormat": "Process Write Bytes (MB)",
           "refId": "A"
         }
       ],
@@ -372,8 +372,8 @@
           "datasource": {
             "type": "prometheus"
           },
-          "expr": "sftp_s3_disk_usage_increase_mb",
-          "legendFormat": "Disk Usage Increase (MB)",
+          "expr": "sftp_s3_process_write_bytes_mb",
+          "legendFormat": "Process Write Bytes (MB)",
           "refId": "B"
         }
       ],
@@ -572,11 +572,11 @@
       },
       "id": 8,
       "options": {
-        "content": "# 🚀 Simplified SFTP to S3 Streaming Dashboard\n\n**Real-time Performance Monitoring with Resource Analytics**\n\n## ⚡ Key Performance Metrics:\n- **Memory Usage**: Should remain stable throughout transfer (~100-300MB)\n- **Disk Usage Increase**: Should stay near 0MB (indicates true streaming without disk buffering)\n- **Transfer Throughput**: Real-time transfer speed in MB/s\n- **Chunks Processed**: Number of file chunks successfully transferred\n\n## 🎯 Streaming Efficiency Indicators:\n- **Green Memory Usage** (<500MB): Efficient memory management\n- **Green Disk Usage Increase** (<10MB): True streaming without disk writes\n- **High Throughput**: Optimal network utilization\n- **Steady Progress**: Consistent chunk processing\n\n## 📊 Performance Expectations:\n- **Memory Efficiency**: Flat memory usage regardless of file size\n- **Disk Efficiency**: Minimal disk usage increase proves streaming\n- **Network Utilization**: Concurrent operations maximize bandwidth\n- **File Integrity**: Simple size-based verification ensures data integrity\n\n## 🔧 Resource Insights:\n- **Stable Memory**: Good memory management\n- **Low Disk Usage**: Proper streaming implementation  \n- **High Throughput**: Network bandwidth fully utilized\n- **Consistent Progress**: Reliable chunk processing\n\n---\n*Dashboard refreshes every 5 seconds • Resource metrics update in real-time*",
+        "content": "SFTP to S3 Streaming Dashboard",
         "mode": "markdown"
       },
       "pluginVersion": "9.0.0",
-      "title": "🚀 Simplified Streaming Performance Analysis",
+      "title": "Streaming Performance Analysis",
       "type": "text"
     }
   ],
