@@ -1,14 +1,9 @@
-"""
-Example script demonstrating SFTP to S3 streaming with high-performance async concurrent processing
-"""
-
 import os
 import asyncio
 from sftp_streaming.main import AsyncSFTPToS3Streamer
 
 
 async def main():
-    # SSH connection parameters - needed for async concurrent processing
     ssh_params = {
         "host": os.getenv("SFTP_HOST", "localhost"),
         "username": os.getenv("SFTP_USER", "airflow"),
@@ -16,7 +11,6 @@ async def main():
         "port": int(os.getenv("SFTP_PORT", "30022")),
     }
 
-    # Initialize async streamer with SSH connection parameters
     streamer = AsyncSFTPToS3Streamer(
         bucket_name=os.getenv("S3_BUCKET", "data"),
         push_gateway_url=os.getenv("PUSH_GATEWAY", "http://localhost:9091"),

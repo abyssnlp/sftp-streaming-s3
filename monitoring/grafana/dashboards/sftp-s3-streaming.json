@@ -49,13 +49,13 @@
               }
             ]
           },
-          "unit": "decbytes"
+          "unit": "decmbytes"
         },
         "overrides": []
       },
       "gridPos": {
         "h": 6,
-        "w": 4,
+        "w": 6,
         "x": 0,
         "y": 0
       },
@@ -81,12 +81,79 @@
           "datasource": {
             "type": "prometheus"
           },
-          "expr": "sftp_s3_memory_usage_bytes / 1024 / 1024",
+          "expr": "sftp_s3_memory_usage_mb",
           "legendFormat": "Memory Usage (MB)",
           "refId": "A"
         }
       ],
       "title": "Memory Usage (MB)",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "yellow",
+                "value": 10
+              },
+              {
+                "color": "red",
+                "value": 50
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 6,
+        "x": 6,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "colorMode": "value",
+        "graphMode": "area",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "expr": "sftp_s3_disk_usage_increase_mb",
+          "legendFormat": "Disk Usage Increase (MB)",
+          "refId": "A"
+        }
+      ],
+      "title": "Disk Usage Increase (MB)",
       "type": "stat"
     },
     {
@@ -122,11 +189,11 @@
       },
       "gridPos": {
         "h": 6,
-        "w": 4,
-        "x": 4,
+        "w": 6,
+        "x": 12,
         "y": 0
       },
-      "id": 2,
+      "id": 3,
       "options": {
         "colorMode": "value",
         "graphMode": "area",
@@ -153,7 +220,7 @@
           "refId": "A"
         }
       ],
-      "title": "Transfer Throughput",
+      "title": "Transfer Throughput (MB/s)",
       "type": "stat"
     },
     {
@@ -175,11 +242,11 @@
               },
               {
                 "color": "yellow",
-                "value": 3
+                "value": 50
               },
               {
                 "color": "red",
-                "value": 5
+                "value": 100
               }
             ]
           },
@@ -188,473 +255,100 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 8,
+        "h": 6,
+        "w": 6,
+        "x": 18,
         "y": 0
-      },
-      "id": 8,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_concurrent_reads",
-          "legendFormat": "Active Readers",
-          "refId": "A"
-        }
-      ],
-      "title": "Concurrent Reads",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 6
-              },
-              {
-                "color": "red",
-                "value": 10
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 12,
-        "y": 0
-      },
-      "id": 9,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_concurrent_uploads",
-          "legendFormat": "Active Uploaders",
-          "refId": "A"
-        }
-      ],
-      "title": "Concurrent Uploads",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              },
-              {
-                "color": "yellow",
-                "value": 10
-              },
-              {
-                "color": "red",
-                "value": 15
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 16,
-        "y": 0
-      },
-      "id": 10,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "none",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_queue_size",
-          "legendFormat": "Queue Size",
-          "refId": "A"
-        }
-      ],
-      "title": "Processing Queue",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "s"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 3,
-        "w": 4,
-        "x": 20,
-        "y": 0
-      },
-      "id": 11,
-      "options": {
-        "colorMode": "value",
-        "graphMode": "area",
-        "justifyMode": "auto",
-        "orientation": "auto",
-        "reduceOptions": {
-          "values": false,
-          "calcs": [
-            "lastNotNull"
-          ],
-          "fields": ""
-        },
-        "text": {},
-        "textMode": "auto"
-      },
-      "pluginVersion": "9.0.0",
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_transfer_duration_seconds",
-          "legendFormat": "Transfer Time",
-          "refId": "A"
-        }
-      ],
-      "title": "Transfer Duration",
-      "type": "stat"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "short"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 8,
-        "y": 3
-      },
-      "id": 12,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "multi",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_concurrent_reads",
-          "legendFormat": "Active SFTP Readers",
-          "refId": "A"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_concurrent_uploads",
-          "legendFormat": "Active S3 Uploaders",
-          "refId": "B"
-        },
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_queue_size",
-          "legendFormat": "Processing Queue Size",
-          "refId": "C"
-        }
-      ],
-      "title": "Concurrency Activity",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "decbytes"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 8,
-        "x": 0,
-        "y": 6
-      },
-      "id": 3,
-      "options": {
-        "legend": {
-          "calcs": [],
-          "displayMode": "list",
-          "placement": "bottom"
-        },
-        "tooltip": {
-          "mode": "single",
-          "sort": "none"
-        }
-      },
-      "targets": [
-        {
-          "datasource": {
-            "type": "prometheus"
-          },
-          "expr": "sftp_s3_memory_usage_bytes / 1024 / 1024",
-          "legendFormat": "Memory (MB)",
-          "refId": "A"
-        }
-      ],
-      "title": "Memory Usage Over Time",
-      "type": "timeseries"
-    },
-    {
-      "datasource": {
-        "type": "prometheus"
-      },
-      "fieldConfig": {
-        "defaults": {
-          "color": {
-            "mode": "palette-classic"
-          },
-          "custom": {
-            "axisLabel": "",
-            "axisPlacement": "auto",
-            "barAlignment": 0,
-            "drawStyle": "line",
-            "fillOpacity": 10,
-            "gradientMode": "none",
-            "hideFrom": {
-              "legend": false,
-              "tooltip": false,
-              "vis": false
-            },
-            "lineInterpolation": "linear",
-            "lineWidth": 1,
-            "pointSize": 5,
-            "scaleDistribution": {
-              "type": "linear"
-            },
-            "showPoints": "never",
-            "spanNulls": false,
-            "stacking": {
-              "group": "A",
-              "mode": "none"
-            },
-            "thresholdsStyle": {
-              "mode": "off"
-            }
-          },
-          "mappings": [],
-          "thresholds": {
-            "mode": "absolute",
-            "steps": [
-              {
-                "color": "green",
-                "value": null
-              }
-            ]
-          },
-          "unit": "MBs"
-        },
-        "overrides": []
-      },
-      "gridPos": {
-        "h": 8,
-        "w": 12,
-        "x": 0,
-        "y": 14
       },
       "id": 4,
       "options": {
+        "colorMode": "value",
+        "graphMode": "none",
+        "justifyMode": "auto",
+        "orientation": "auto",
+        "reduceOptions": {
+          "values": false,
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": ""
+        },
+        "text": {},
+        "textMode": "auto"
+      },
+      "pluginVersion": "9.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus"
+          },
+          "expr": "sftp_s3_chunks_processed_total",
+          "legendFormat": "Chunks Processed",
+          "refId": "A"
+        }
+      ],
+      "title": "Chunks Processed",
+      "type": "stat"
+    },
+    {
+      "datasource": {
+        "type": "prometheus"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 10,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "vis": false
+            },
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "never",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              }
+            ]
+          },
+          "unit": "decmbytes"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 12,
+        "x": 0,
+        "y": 6
+      },
+      "id": 5,
+      "options": {
         "legend": {
           "calcs": [],
           "displayMode": "list",
@@ -670,20 +364,20 @@
           "datasource": {
             "type": "prometheus"
           },
-          "expr": "rate(sftp_s3_disk_io_read_bytes_total[5m]) / 1024 / 1024",
-          "legendFormat": "Disk Read (MB/s)",
+          "expr": "sftp_s3_memory_usage_mb",
+          "legendFormat": "Memory Usage (MB)",
           "refId": "A"
         },
         {
           "datasource": {
             "type": "prometheus"
           },
-          "expr": "rate(sftp_s3_disk_io_write_bytes_total[5m]) / 1024 / 1024",
-          "legendFormat": "Disk Write (MB/s)",
+          "expr": "sftp_s3_disk_usage_increase_mb",
+          "legendFormat": "Disk Usage Increase (MB)",
           "refId": "B"
         }
       ],
-      "title": "Disk I/O Activity",
+      "title": "Resource Usage Over Time",
       "type": "timeseries"
     },
     {
@@ -741,9 +435,9 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 14
+        "y": 6
       },
-      "id": 13,
+      "id": 6,
       "options": {
         "legend": {
           "calcs": [],
@@ -831,9 +525,9 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 22
+        "y": 14
       },
-      "id": 5,
+      "id": 7,
       "options": {
         "legend": {
           "calcs": [],
@@ -874,15 +568,15 @@
         "h": 8,
         "w": 24,
         "x": 0,
-        "y": 30
+        "y": 22
       },
-      "id": 7,
+      "id": 8,
       "options": {
-        "content": "# 🚀 High-Performance Concurrent SFTP to S3 Streaming Dashboard\n\n**Real-time Performance Monitoring with Concurrency Analytics**\n\n## ⚡ Key Performance Metrics:\n- **Memory Usage**: Should remain constant (~100-200MB) regardless of file size\n- **Concurrent Operations**: Monitor active SFTP readers (target: 4) and S3 uploaders (target: 8)\n- **Processing Queue**: Optimal queue size should be 8-16 chunks for smooth pipeline flow\n- **Throughput**: Expected 20-50x improvement over sequential processing\n\n## 🎯 Concurrency Efficiency Indicators:\n- **Green Concurrent Activity**: 4 active readers + 8 active uploaders = optimal parallelism\n- **Yellow Queue Size** (10-15): High throughput with good buffering\n- **Red Queue Size** (>15): Potential bottleneck - readers outpacing uploaders\n\n## 📊 Performance Expectations:\n- **Sequential Processing**: ~1-5 MB/s (old implementation)\n- **Concurrent Processing**: **30-150 MB/s** (new implementation)\n- **Memory Efficiency**: Flat memory usage proves streaming scalability\n- **Network Utilization**: Maximized through parallel operations\n\n## 🔧 Optimization Insights:\n- **High Concurrent Reads**: Good SFTP throughput\n- **High Concurrent Uploads**: Good S3 throughput  \n- **Balanced Queue Size**: Optimal pipeline flow\n- **Consistent Throughput**: Network bandwidth fully utilized\n\n---\n*Dashboard refreshes every 5 seconds • Concurrent metrics update in real-time*",
+        "content": "# 🚀 Simplified SFTP to S3 Streaming Dashboard\n\n**Real-time Performance Monitoring with Resource Analytics**\n\n## ⚡ Key Performance Metrics:\n- **Memory Usage**: Should remain stable throughout transfer (~100-300MB)\n- **Disk Usage Increase**: Should stay near 0MB (indicates true streaming without disk buffering)\n- **Transfer Throughput**: Real-time transfer speed in MB/s\n- **Chunks Processed**: Number of file chunks successfully transferred\n\n## 🎯 Streaming Efficiency Indicators:\n- **Green Memory Usage** (<500MB): Efficient memory management\n- **Green Disk Usage Increase** (<10MB): True streaming without disk writes\n- **High Throughput**: Optimal network utilization\n- **Steady Progress**: Consistent chunk processing\n\n## 📊 Performance Expectations:\n- **Memory Efficiency**: Flat memory usage regardless of file size\n- **Disk Efficiency**: Minimal disk usage increase proves streaming\n- **Network Utilization**: Concurrent operations maximize bandwidth\n- **File Integrity**: Simple size-based verification ensures data integrity\n\n## 🔧 Resource Insights:\n- **Stable Memory**: Good memory management\n- **Low Disk Usage**: Proper streaming implementation  \n- **High Throughput**: Network bandwidth fully utilized\n- **Consistent Progress**: Reliable chunk processing\n\n---\n*Dashboard refreshes every 5 seconds • Resource metrics update in real-time*",
         "mode": "markdown"
       },
       "pluginVersion": "9.0.0",
-      "title": "🚀 Concurrent Streaming Performance Analysis",
+      "title": "🚀 Simplified Streaming Performance Analysis",
       "type": "text"
     }
   ],
@@ -894,7 +588,7 @@
     "s3",
     "streaming",
     "performance",
-    "concurrency"
+    "simplified"
   ],
   "templating": {
     "list": []
@@ -905,8 +599,8 @@
   },
   "timepicker": {},
   "timezone": "",
-  "title": "🚀 SFTP to S3 Concurrent Streaming Performance",
+  "title": "🚀 SFTP to S3 Simplified Streaming Performance",
   "uid": "sftp-s3-streaming",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
