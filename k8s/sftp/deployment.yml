@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: sftp-server
+  namespace: sftp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: sftp-server
+  template:
+    metadata:
+      labels:
+        app: sftp-server
+    spec:
+      containers:
+      - name: sftp
+        image: atmoz/sftp:latest
+        # The atmoz/sftp image expects users in the format: username:password:uid:gid
+        args: ["airflow:airflow123:1000:1000:upload"]
+        ports:
+        - containerPort: 22
+          name: sftp
+        volumeMounts:
+        - name: sftp-data
+          mountPath: /home/airflow/upload
+        resources:
+          requests:
+            memory: "256Mi"
+            cpu: "100m"
+          limits:
+            memory: "512Mi"
+            cpu: "200m"
+      volumes:
+      - name: sftp-data
+        persistentVolumeClaim:
+          claimName: sftp-data-pvc
